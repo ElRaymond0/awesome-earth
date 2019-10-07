@@ -1,12 +1,12 @@
 import React from "react"
-import { graphql } from "gatsby"
-import { Link } from "gatsby"
+import { Link, graphql } from "gatsby"
+import BackgroundImage from 'gatsby-background-image'
 
 import "normalize.css"
 import "../styles/global.scss"
 
 export default ({ data }) => {
-  const categories = data.allMarkdownRemark.edges.map(edge => edge.node.frontmatter)
+  const categories = data.allMarkdownRemark.edges.map(edge => edge.node.frontmatter);
   return (
     <>
       <h1>Awesome Earth</h1>
@@ -16,9 +16,14 @@ export default ({ data }) => {
       <ul>
         {categories.map(category => {
           return (
-            <li key={category.id}>
-              <Link to={category.path}>{category.name}</Link>
-            </li>
+            <BackgroundImage
+              Tag="li"
+              className="category-image"
+              fluid={category.image.childImageSharp.fluid}
+              backgroundColor={`#040e18`}
+            >
+              <Link to={category.id}>{category.name}</Link>
+            </BackgroundImage>
           );
         })}
       </ul>
@@ -35,9 +40,16 @@ export const pageQuery = graphql`
             id
             path
             name
+            image {
+              childImageSharp {
+                fluid {
+                  ...GatsbyImageSharpFluid
+                }
+              }
+            }
           }
         }
       }
     }
   }
-`
+`;
